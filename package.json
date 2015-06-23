@@ -1,5 +1,5 @@
 {
-  "name": "Logger",
+  "name": "logger",
   "version": "0.0.10",
   "description": "winston logger wrapper",
   "main": "logger.js",
