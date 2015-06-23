@@ -1,0 +1,26 @@
+{
+	"file": {
+		"dirname"  : "logs",
+		"filename" : "app",
+		"json"     : false,
+		"level"	   : "raw"
+	},
+	"sns": {
+		"aws_key"    : "",
+		"aws_secret" : "",
+		"region"     : "",
+		"subscriber" : ,
+		"topic_arn"  : "",
+		"subject"    : "App Error",
+		"message"    : "From: %m\nError: %e",
+		"level"      : "error",
+		"json"       : false,
+		"interval"   : 180
+	},
+	"mongodb": {
+		"level"      : "raw",
+		"db"         : "",
+		"collection" : "logs",
+		"host"       : "localhost"
+	}
+}
