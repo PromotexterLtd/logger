@@ -4,6 +4,7 @@
 	var winston = require('winston');
 	var os      = require('os');
 	var MongoDB = require('winston-mongodb').MongoDB;
+	var Loggly  = require('winston-loggly');
 	var SNS     = require('winston-sns');
 	var http    = require('http');
 	var crypto  = require('crypto');
@@ -76,6 +77,10 @@
 
 		if(typeof conf.sns === 'object') {
 			self.sns_logger.add(SNS, conf.sns);
+		}
+
+		if(typeof conf.loggly === 'object') {
+			self.default_logger.add(winston.transports.Loggly, conf.loggly);
 		}
 
 

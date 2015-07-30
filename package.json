@@ -9,6 +9,7 @@
   "dependencies": {
     "rc": "0.5.0",
     "winston": "0.7.3",
+    "winston-loggly": "^1.1.0",
     "winston-mongodb": "^0.5.3",
     "winston-sns": "^0.2.0"
   },
