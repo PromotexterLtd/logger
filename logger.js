@@ -106,9 +106,9 @@
 
 			if(level === 'raw') {
 				self.raw_logger.raw(message, meta);
-				self.default_logger[level.toLowerCase()](message);
+				self.default_logger[level.toLowerCase()](message, meta);
 			} else {
-				self.default_logger[level.toLowerCase()](message);
+				self.default_logger[level.toLowerCase()](message, meta);
 			}
 
 			if(level == 'error' || level == 'critical') {
