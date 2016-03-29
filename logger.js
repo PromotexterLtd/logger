@@ -148,6 +148,7 @@
 
             if(self.loggly) {
                 meta.message = message;
+                meta.level = level;
                 self.logglylogs.push(meta);
             }
 
