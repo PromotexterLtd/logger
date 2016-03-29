@@ -79,7 +79,7 @@
 		}
 
         if(typeof conf.loggly === 'object') {
-            console.log(conf.loggly);
+            //console.log(conf.loggly);
             self.loggly = loggly.createClient({
                 subdomain : conf.loggly.subdomain,
                 auth      : conf.loggly.auth || null,
@@ -156,12 +156,12 @@
 
         setInterval(function() {
             if(self.logglylogs && self.logglylogs.length > 0) {
-                console.log('draining loggly logs');
+                //console.log('draining loggly logs');
                 self.loggly.log(self.logglylogs.splice(0, self.logglylogs.length), function(err, res) {
                     if(err) {
-                        console.log(err);
+                        //console.log(err);
                     } else {
-                        console.log('sent logs to loggly', res);
+                        //console.log('sent logs to loggly', res);
                     }
 
                 });
