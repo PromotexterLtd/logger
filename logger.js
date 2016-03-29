@@ -4,10 +4,10 @@
 	var winston = require('winston');
 	var os      = require('os');
 	var MongoDB = require('winston-mongodb').MongoDB;
-	var Loggly  = require('winston-loggly');
 	var SNS     = require('winston-sns');
 	var http    = require('http');
 	var crypto  = require('crypto');
+    var loggly  = require('loggly');
 
 	var levels  = {
 		default_logger: {
@@ -57,7 +57,6 @@
 								levels: levels.default_logger.levels,
 								colors: levels.default_logger.colors});
 
-
 		//options
 		var conf = require('rc')('logger', {});
 		self.conf = conf;
@@ -79,10 +78,20 @@
 			self.sns_logger.add(SNS, conf.sns);
 		}
 
-		if(typeof conf.loggly === 'object') {
-			self.default_logger.add(winston.transports.Loggly, conf.loggly);
-		}
+        if(typeof conf.loggly === 'object') {
+            console.log(conf.loggly);
+            self.loggly = loggly.createClient({
+                subdomain : conf.loggly.subdomain,
+                auth      : conf.loggly.auth || null,
+                json      : conf.loggly.json || false,
+                proxy     : conf.loggly.proxy || null,
+                token     : conf.loggly.inputToken,
+                //tags      : tags,
+                //isBulk    : conf.loggly.isBulk || false
+            });
 
+            self.logglylogs = [];
+        }
 
 		// winston supports string interpolation. We don't need that
 		// we just want to concat args
@@ -136,7 +145,28 @@
 					}
 				}
 			}
+
+            if(self.loggly) {
+                meta.message = message;
+                self.logglylogs.push(meta);
+            }
+
+
 		};
+
+        setInterval(function() {
+            if(self.logglylogs && self.logglylogs.length > 0) {
+                console.log('draining loggly logs');
+                self.loggly.log(self.logglylogs.splice(0, self.logglylogs.length), function(err, res) {
+                    if(err) {
+                        console.log(err);
+                    } else {
+                        console.log('sent logs to loggly', res);
+                    }
+
+                });
+            }
+        }, 1000);
 
 		var methods = [
 			'raw',
