@@ -5,6 +5,8 @@
 	var os      = require('os');
 	var MongoDB = require('winston-mongodb').MongoDB;
 	var SNS     = require('winston-sns');
+
+	var Slack = require('winston-slack').Slack;
 	var http    = require('http');
 	var crypto  = require('crypto');
     var loggly  = require('loggly');
@@ -57,6 +59,8 @@
 								levels: levels.default_logger.levels,
 								colors: levels.default_logger.colors});
 
+
+
 		//options
 		var conf = require('rc')('logger', {});
 		self.conf = conf;
@@ -76,6 +80,14 @@
 
 		if(typeof conf.sns === 'object') {
 			self.sns_logger.add(SNS, conf.sns);
+		}
+
+		if(typeof conf.slack === 'object') {
+			self.slack_logger = new (winston.Logger)({level: 'raw',
+									levels: levels.default_logger.levels,
+									colors: levels.default_logger.colors});
+
+			self.slack_logger.add(Slack, conf.slack);
 		}
 
         if(typeof conf.loggly === 'object') {
@@ -146,11 +158,20 @@
 				}
 			}
 
-            if(self.loggly) {
-                meta.message = message;
-                meta.level = level;
-                self.logglylogs.push(meta);
-            }
+      if(self.loggly) {
+          meta.message = message;
+          meta.level = level;
+          self.logglylogs.push(meta);
+      }
+
+			if(self.slack_logger) {
+
+					if(levels.default_logger.levels[level] >= levels.default_logger.levels[conf.slack.level]) {
+						self.slack_logger[level](message);
+					}
+
+
+      }
 
 
 		};
