@@ -10,6 +10,9 @@
 	var http    = require('http');
 	var crypto  = require('crypto');
     var loggly  = require('loggly');
+    var common = require('winston/lib/winston/common')
+
+
 
 	var levels  = {
 		default_logger: {
@@ -59,8 +62,6 @@
 								levels: levels.default_logger.levels,
 								colors: levels.default_logger.colors});
 
-
-
 		//options
 		var conf = require('rc')('logger', {});
 		self.conf = conf;
@@ -83,11 +84,24 @@
 		}
 
 		if(typeof conf.slack === 'object') {
-			self.slack_logger = new (winston.Logger)({level: 'raw',
-									levels: levels.default_logger.levels,
-									colors: levels.default_logger.colors});
+			self.default_logger.add(Slack, conf.slack);
 
-			self.slack_logger.add(Slack, conf.slack);
+            // setup a custom formatter for slack
+            self.default_logger.transports.slack.customFormatter = function(level, msg, meta) {
+                var output = common.log({
+                    level:       level,
+                    message:     msg,
+                    meta:        meta,
+                    timestamp:   true,
+                    prettyPrint: false,
+                });
+
+                return  {
+                    text: output,
+                    channel: this.channel,
+                    username: this.username
+                };
+            };
 		}
 
         if(typeof conf.loggly === 'object') {
@@ -158,22 +172,11 @@
 				}
 			}
 
-      if(self.loggly) {
-          meta.message = message;
-          meta.level = level;
-          self.logglylogs.push(meta);
-      }
-
-			if(self.slack_logger) {
-
-					if(levels.default_logger.levels[level] >= levels.default_logger.levels[conf.slack.level]) {
-						self.slack_logger[level](message);
-					}
-
-
-      }
-
-
+            if(self.loggly) {
+                meta.message = message;
+                meta.level = level;
+                self.logglylogs.push(meta);
+            }
 		};
 
         setInterval(function() {
