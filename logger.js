@@ -10,7 +10,9 @@
 	var http    = require('http');
 	var crypto  = require('crypto');
     var loggly  = require('loggly');
-    var common = require('winston/lib/winston/common')
+    var common = require('winston/lib/winston/common');
+    var Elasticsearch = require('winston-elasticsearch');
+    var es = require('elasticsearch');
 
 
 
@@ -117,6 +119,12 @@
             });
 
             self.logglylogs = [];
+        }
+
+        if(typeof  conf.elasticsearch === 'object') {
+            var client = es.Client(conf.elasticsearch.clientOps);
+            conf.elasticsearch.client = client;
+            self.default_logger.add(Elasticsearch, conf.elasticsearch);
         }
 
 		// winston supports string interpolation. We don't need that
