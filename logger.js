@@ -6,7 +6,7 @@
 	var MongoDB = require('winston-mongodb').MongoDB;
 	var SNS     = require('winston-sns');
 
-	var Slack = require('winston-slack').Slack;
+// 	var Slack = require('winston-slack').Slack;
 	var http    = require('http');
 	var crypto  = require('crypto');
     var loggly  = require('loggly');
@@ -83,8 +83,8 @@
 			self.sns_logger.add(SNS, conf.sns);
 		}
 
-		if(typeof conf.slack === 'object') {
-			self.default_logger.add(Slack, conf.slack);
+// 		if(typeof conf.slack === 'object') {
+// 			self.default_logger.add(Slack, conf.slack);
 
             // setup a custom formatter for slack
             self.default_logger.transports.slack.customFormatter = function(level, msg, meta) {
