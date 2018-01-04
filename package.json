@@ -12,7 +12,6 @@
     "winston": "0.7.3",
     "winston-loggly": "^1.1.0",
     "winston-mongodb": "^0.5.3",
-    "winston-slack": "^0.1.6",
     "winston-sns": "^0.2.0"
   },
   "devDependencies": {},
