@@ -83,26 +83,26 @@
 			self.sns_logger.add(SNS, conf.sns);
 		}
 
-// 		if(typeof conf.slack === 'object') {
-// 			self.default_logger.add(Slack, conf.slack);
-
-            // setup a custom formatter for slack
-            self.default_logger.transports.slack.customFormatter = function(level, msg, meta) {
-                var output = common.log({
-                    level:       level,
-                    message:     msg,
-                    meta:        meta,
-                    timestamp:   true,
-                    prettyPrint: false,
-                });
-
-                return  {
-                    text: output,
-                    channel: this.channel,
-                    username: this.username
-                };
-            };
-		}
+		// if(typeof conf.slack === 'object') {
+		// 	self.default_logger.add(Slack, conf.slack);
+        //
+         //    // setup a custom formatter for slack
+         //    self.default_logger.transports.slack.customFormatter = function(level, msg, meta) {
+         //        var output = common.log({
+         //            level:       level,
+         //            message:     msg,
+         //            meta:        meta,
+         //            timestamp:   true,
+         //            prettyPrint: false,
+         //        });
+        //
+         //        return  {
+         //            text: output,
+         //            channel: this.channel,
+         //            username: this.username
+         //        };
+         //    };
+		// }
 
         if(typeof conf.loggly === 'object') {
             //console.log(conf.loggly);
