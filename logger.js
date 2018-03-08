@@ -146,9 +146,9 @@
 				self.default_logger[level.toLowerCase()](message, meta);
 			}
 
-			if(level == 'error' || level == 'critical') {
-				self.log('debug', level.toUpperCase() + ':' + new Error().stack);
-			}
+			// if(level == 'error' || level == 'critical') {
+			// 	self.log('debug', level.toUpperCase() + ':' + new Error().stack);
+			// }
 
 			// sns logging
 			if(typeof conf.sns === 'object') {
